@@ -1,0 +1,19 @@
+[project]
+name = "pytorch-crash-course"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "einops>=0.8.2",
+    "ipykernel>=7.3.0",
+    "jupyter>=1.1.1",
+    "matplotlib>=3.11.0",
+    "numpy>=2.5.1",
+    "pytest>=9.1.1",
+    "torch>=2.12.1",
+    "torchvision>=0.27.1",
+]
+
+[tool.pytest.ini_options]
+python_files = ["practice/*.py"]

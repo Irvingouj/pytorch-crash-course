@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+
+# Virtualenv
+.venv/
+
+# Generated outputs
+*.png
+*.jpg
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Pi agent
+.pi/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PyTorch
+*.pth
+*.pt
