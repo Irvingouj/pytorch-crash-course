@@ -15,5 +15,8 @@ dependencies = [
     "torchvision>=0.27.1",
 ]
 
+[tool.ruff.lint]
+ignore = ["F541"]   # f-string without any placeholders
+
 [tool.pytest.ini_options]
 python_files = ["practice/*.py"]

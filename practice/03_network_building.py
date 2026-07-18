@@ -14,14 +14,13 @@ def test_q1():
         """
         一个简单的线性层：输入 10 维 -> 输出 5 维。
         """
+
         def __init__(self):
             super().__init__()
-            # YOUR CODE HERE
-            pass
+            self.linear = nn.Linear(10, 5)
 
         def forward(self, x):
-            # YOUR CODE HERE
-            pass
+            return self.linear(x)
 
     model = SimpleLinear()
     out = model(torch.randn(4, 10))
@@ -35,14 +34,18 @@ def test_q2():
         """
         两层全连接 + ReLU：input_dim -> hidden_dim -> ReLU -> output_dim。
         """
+
         def __init__(self, input_dim: int, hidden_dim: int, output_dim: int):
             super().__init__()
-            # YOUR CODE HERE
-            pass
+
+            self.net = nn.Sequential(
+                nn.Linear(input_dim, hidden_dim),
+                nn.ReLU(),
+                nn.Linear(hidden_dim, output_dim),
+            )
 
         def forward(self, x):
-            # YOUR CODE HERE
-            pass
+            return self.net(x)
 
     model = TwoLayerMLP(20, 64, 3)
     out = model(torch.randn(8, 20))
@@ -55,8 +58,13 @@ def test_q3():
         """
         用 nn.Sequential 搭建：input_dim -> 64 -> ReLU -> 32 -> ReLU -> output_dim。
         """
-        # YOUR CODE HERE
-        pass
+        return nn.Sequential(
+            nn.Linear(input_dim, 64),
+            nn.ReLU(),
+            nn.Linear(64, 32),
+            nn.ReLU(),
+            nn.Linear(32, output_dim),
+        )
 
     model = build_sequential_network(10, 5)
     assert isinstance(model, nn.Sequential)
@@ -70,14 +78,21 @@ def test_q4():
         """
         input_dim -> 128 -> ReLU -> Dropout(0.5) -> 64 -> ReLU -> Dropout(0.2) -> output_dim。
         """
+
         def __init__(self, input_dim: int, output_dim: int):
             super().__init__()
-            # YOUR CODE HERE
-            pass
+            self.net = nn.Sequential(
+                nn.Linear(input_dim, 128),
+                nn.ReLU(),
+                nn.Dropout(0.5),
+                nn.Linear(128, 64),
+                nn.ReLU(),
+                nn.Dropout(0.2),
+                nn.Linear(64, output_dim),
+            )
 
         def forward(self, x):
-            # YOUR CODE HERE
-            pass
+            return self.net(x)
 
     model = DropoutNet(10, 3)
     x = torch.randn(4, 10)
@@ -94,14 +109,18 @@ def test_q5():
         """
         input_dim -> Linear(hidden) -> BatchNorm1d -> ReLU -> Linear(output_dim)。
         """
+
         def __init__(self, input_dim: int, hidden_dim: int, output_dim: int):
             super().__init__()
-            # YOUR CODE HERE
-            pass
+            self.net = nn.Sequential(
+                nn.Linear(input_dim, hidden_dim),
+                nn.BatchNorm1d(hidden_dim),
+                nn.ReLU(),
+                nn.Linear(hidden_dim, output_dim),
+            )
 
         def forward(self, x):
-            # YOUR CODE HERE
-            pass
+            return self.net(x)
 
     model = BatchNormNet(10, 32, 5)
     out = model(torch.randn(4, 10))
@@ -114,14 +133,21 @@ def test_q6():
         """
         一个 encoder 被两个输入共享，编码后 concat，再过 Linear 输出。
         """
+
         def __init__(self, input_dim: int, hidden_dim: int, output_dim: int):
             super().__init__()
-            # YOUR CODE HERE
+            self.linear1 = nn.Linear(input_dim, hidden_dim)
+            self.linear2 = nn.Linear(input_dim, hidden_dim)
+            self.output = nn.Linear(hidden_dim * 2, output_dim)
             pass
 
         def forward(self, x1, x2):
-            # YOUR CODE HERE
-            pass
+            x1_v = self.linear1(x1)
+            x2_v = self.linear2(x2)
+            print(f"x1_v.shape={x1_v.shape}, x2_v.shape={x2_v.shape}")
+            concated = torch.cat([x1_v, x2_v], dim=1)
+            print(f"concated.shape={concated.shape}")
+            return self.output(concated)
 
     model = SharedWeightNet(10, 16, 3)
     out = model(torch.randn(4, 10), torch.randn(4, 10))
@@ -134,14 +160,14 @@ def test_q7():
         """
         y = scale * x + bias，scale 和 bias 是可训练 nn.Parameter。
         """
+
         def __init__(self, dim: int):
             super().__init__()
-            # YOUR CODE HERE
-            pass
+            self.scale = nn.Parameter(torch.ones(dim))
+            self.bias = nn.Parameter(torch.zeros(dim))
 
         def forward(self, x):
-            # YOUR CODE HERE
-            pass
+            return self.scale * x + self.bias
 
     model = LearnableScale(5)
     out = model(torch.randn(3, 5))
@@ -158,14 +184,16 @@ def test_q8():
         """
         out = ReLU(Linear(ReLU(Linear(x))) + x)。
         """
+
         def __init__(self, dim: int):
             super().__init__()
-            # YOUR CODE HERE
-            pass
+            self.linear1 = nn.Linear(dim,dim)
+            self.relu = nn.ReLU()
+            self.linear2 = nn.Linear(dim,dim)
+            self
 
         def forward(self, x):
-            # YOUR CODE HERE
-            pass
+            return self.relu(self.linear2(self.relu(self.linear1(x))) + x)
 
     model = ResidualBlock(16)
     out = model(torch.randn(4, 16))
@@ -178,8 +206,10 @@ def test_q8():
 #  Expected values (sealed away so you don't see the answer while implementing).
 # ---------------------------------------------------------------------------
 
+
 def _expected_q7_scale():
     return torch.ones(5)
+
 
 def _expected_q7_bias():
     return torch.zeros(5)

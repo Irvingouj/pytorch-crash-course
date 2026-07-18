@@ -14,8 +14,10 @@ def test_q1():
         计算 f(x) = x³ + 2x² - 5x + 1 在 x = x_val 处的导数。
         要求：使用 PyTorch autograd，不允许手动算导数公式。
         """
-        # YOUR CODE HERE
-        pass
+        x_tensor = torch.tensor(x_val, requires_grad=True)
+        y = x_tensor ** 3 + 2 * x_tensor ** 2 - 5 * x_tensor + 1
+        y.backward()
+        return x_tensor.grad.item()
 
     out = compute_gradient_at_point(2.0)
     assert abs(out - _expected_q1()) < 1e-5, f"Q1: expected {_expected_q1()}, got {out}"
@@ -27,8 +29,12 @@ def test_q2():
         """
         计算 f(x, y) = x²·y + 3x·y² 在 (x_val, y_val) 处的两个偏导数。
         """
-        # YOUR CODE HERE
-        pass
+        
+        x_tensor = torch.tensor(x_val, requires_grad=True)
+        y_tensor = torch.tensor(y_val, requires_grad=True)
+        f = x_tensor ** 2 * y_tensor + 3 * x_tensor * y_tensor ** 2
+        f.backward()
+        return x_tensor.grad.item(), y_tensor.grad.item()
 
     dx, dy = compute_partial_derivatives(1.0, 2.0)
     assert abs(dx - _expected_q2_dx()) < 1e-5, f"Q2: df/dx expected {_expected_q2_dx()}, got {dx}"
@@ -41,8 +47,11 @@ def test_q3():
         """
         令 u = x² + 1, y = sin(u)，用 autograd 计算 dy/dx。
         """
-        # YOUR CODE HERE
-        pass
+        x_tensor = torch.tensor(x_val, requires_grad=True)
+        u = x_tensor ** 2 + 1
+        y = torch.sin(u)
+        y.backward()
+        return x_tensor.grad.item()
 
     out = chain_rule_demo(1.0)
     assert abs(out - _expected_q3()) < 1e-5, f"Q3: expected {_expected_q3()}, got {out}"
@@ -54,8 +63,8 @@ def test_q4():
         """
         对 x 做平方运算，但不要追踪梯度。
         """
-        # YOUR CODE HERE
-        pass
+        with torch.no_grad():
+            return x*x
 
     x = torch.tensor(3.0, requires_grad=True)
     out = no_grad_computation(x)
@@ -69,8 +78,7 @@ def test_q5():
         """
         对 x 做 y = x * 2 + 3，然后返回 y 的 detached 版本。
         """
-        # YOUR CODE HERE
-        pass
+        return (x*2 + 3).detach()
 
     x = torch.tensor(2.0, requires_grad=True)
     out = detach_and_modify(x)
@@ -84,8 +92,13 @@ def test_q6():
         """
         重复 backward，但每次 backward 前要清零梯度，返回最终 x.grad。
         """
-        # YOUR CODE HERE
-        pass
+        for i in range(n_steps):
+            if x.grad is not None:
+                x.grad.zero_()
+            y = x ** 2
+            y.backward()
+
+        return x.grad
 
     x = torch.tensor(2.0, requires_grad=True)
     out = accumulate_and_clear(x, 4)
@@ -98,8 +111,10 @@ def test_q7():
         """
         对 y = x² 使用 gradient=[1, 1, 1] 做 backward，返回 x.grad。
         """
-        # YOUR CODE HERE
-        pass
+        x = torch.tensor([1.,2.,3.],requires_grad=True)
+        y = x**2
+        y.backward(gradient=torch.ones_like(y))
+        return x.grad
 
     out = vector_backward_demo()
     assert torch.allclose(out, _expected_q7())
@@ -111,8 +126,11 @@ def test_q8():
         """
         计算 f(x) = x⁴ 在 x = x_val 处的二阶导数。
         """
-        # YOUR CODE HERE
-        pass
+        x = torch.tensor(x_val,requires_grad=True)
+        y = x ** 4
+        grad1 = torch.autograd.grad(y,x, create_graph=True)[0]
+        grad2 = torch.autograd.grad(grad1,x)[0]
+        return grad2
 
     out = second_derivative(2.0)
     assert abs(out - _expected_q8()) < 1e-5

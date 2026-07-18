@@ -5,7 +5,7 @@ read the tutorial to understand the API and concepts, then implement the stubs i
 
 ```
 tutorial/          ← Run me first!  (7 lessons, ~10 min each)
-practice/          ← Then do me!    (7 problem sets, ~60 LeetCode-style questions)
+practice/          ← Then do me!    (8 problem sets, ~70 LeetCode-style questions)
 ```
 
 ---
@@ -37,6 +37,9 @@ python practice/01_tensor_ops.py
 | 5 | `05_data_loading.py` | `05_custom_dataset.py` | Dataset、DataLoader、transforms、collate_fn |
 | 6 | `06_training_loop.py` | `06_training.py` | 完整训练/验证循环、Early Stopping、Gradient Clipping |
 | 7 | `07_gpu_save_load.py` | `07_gpu_checkpoint.py` | GPU 迁移、state_dict、checkpoint 保存恢复 |
+| 8 | `08_cs336_bridge_lab.ipynb` | `08_cs336_bridge.py` | CS336 桥梁：token 流、causal attention、LM loss、decode、KV cache |
+
+> 第 8 课的硬前提：第 1–7 课已经完成；不会复习 PyTorch API 基础。
 
 ---
 
@@ -48,7 +51,8 @@ python practice/01_tensor_ops.py
   tutorial/01 → practice/01  ✅ 全部通过？
   tutorial/02 → practice/02  ✅ 全部通过？
   ...                        ✅
-  tutorial/07 → practice/07  🎉 恭喜毕业！
+  tutorial/07 → practice/07  ✅ PyTorch 基础毕业
+  tutorial/08 → practice/08  🚀 进入 CS336 / Transformer
 ```
 
 ### 练习文件结构
@@ -129,4 +133,4 @@ def test_q1():
 - 保存/加载模型和 checkpoint
 - 把模型搬到 GPU 训练
 
-下一步可以继续学：CNN、RNN/LSTM、Transformer、TorchScript、分布式训练…
+下一步：进入 Stanford CS336 Assignment 1；本课程只做前置训练，不提供正式作业答案。

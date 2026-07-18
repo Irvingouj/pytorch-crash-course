@@ -48,10 +48,11 @@ def test_q3():
         将一个 1D Tensor 变形为方阵。假设元素个数是完全平方数。
         """
         # YOUR CODE HERE
+        import math 
+        totalNum = t.numel()
+        sideLength = int(math.sqrt(totalNum))
 
-
-
-        pass
+        return t.reshape(-1, sideLength)
 
     out = reshape_to_square(torch.tensor([1, 2, 3, 4]))
     assert torch.equal(out, _expected_q3())
@@ -63,9 +64,10 @@ def test_q4():
         """
         用 torch 操作实现矩阵乘法 A @ B（不允许直接用 @ 或 torch.mm/torch.matmul）。
         """
-        # YOUR CODE HERE
-        pass
+        # I DON'T UNDERSTAND THIS
+        return torch.sum(A.unsqueeze(2) * B.unsqueeze(0), dim=1)
 
+    # ===============
     A = torch.tensor([[1., 2.], [3., 4.]])
     B = torch.tensor([[5., 6.], [7., 8.]])
     assert torch.equal(matmul_manual(A, B), _expected_q4())
@@ -77,8 +79,9 @@ def test_q5():
         """
         把 vec 加到 matrix 的每一列上。matrix: (m, n), vec: (m,)。
         """
-        # YOUR CODE HERE
-        pass
+        # Unsqueeze makes vec shape (m, 1), which can be broadcasted to (m, n)
+        # [10,20] unsqueeze will become [[10],[20]] and boardcast to [[10,10],[20,20]] when added to matrix
+        return matrix + vec.unsqueeze(1)
 
     matrix = torch.tensor([[1, 2], [3, 4]])
     vec = torch.tensor([10, 20])
@@ -91,8 +94,12 @@ def test_q6():
         """
         对每一行做 Min-Max 归一化。全相同行返回 0.5。
         """
-        # YOUR CODE HERE
-        pass
+        row_min = t.min(dim=1, keepdim=True).values
+        row_max = t.max(dim=1, keepdim=True).values
+        denom = row_max - row_min
+        # 全相同行 denom==0，用 torch.where 返回 0.5
+        result = (t - row_min) / denom
+        return torch.where(denom == 0, 0.5, result)
 
     x = torch.tensor([[1., 2., 3.], [5., 5., 5.]])
     expected = _expected_q6()
@@ -105,8 +112,7 @@ def test_q7():
         """
         将 t 中所有负值替换为 0。不允许用循环。
         """
-        # YOUR CODE HERE
-        pass
+        return torch.clamp(t, min=0)
 
     out = replace_negatives_with_zero(torch.tensor([-1, 2, -3, 4]))
     assert torch.equal(out, _expected_q7())
@@ -119,7 +125,8 @@ def test_q8():
         返回方阵 t 的对角线元素（用索引，不允许用 torch.diag）。
         """
         # YOUR CODE HERE
-        pass
+        index = torch.arange(t.size(0))
+        return t[index, index]
 
     out = get_diagonal_elements(torch.tensor([[1, 2], [3, 4]]))
     assert torch.equal(out, _expected_q8())
@@ -131,8 +138,9 @@ def test_q9():
         """
         接收 NumPy 数组，转成共享内存的 torch.Tensor，所有元素加 1，返回。
         """
-        # YOUR CODE HERE
-        pass
+        t = torch.from_numpy(arr)
+        t.add_(1)
+        return t;
 
     arr = np.array([1., 2., 3.])
     out = numpy_to_torch_add_one(arr)
@@ -146,8 +154,7 @@ def test_q10():
         """
         将两个同形状 tensor 沿第 0 维堆叠。
         """
-        # YOUR CODE HERE
-        pass
+        return torch.stack((a, b), dim=0)
 
     out = stack_along_new_axis(torch.tensor([1, 2]), torch.tensor([3, 4]))
     assert torch.equal(out, _expected_q10())
@@ -160,7 +167,7 @@ def test_q11():
         用 einops.rearrange 将 (batch, channel, height, width) 展平为 (batch, channel*height*width)。
         """
         # YOUR CODE HERE
-        pass
+        return rearrange(imgs, 'b c h w -> b (c h w)')
 
     imgs = torch.arange(2 * 3 * 4 * 4).reshape(2, 3, 4, 4)
     out = flatten_images(imgs)
@@ -174,8 +181,7 @@ def test_q12():
         """
         用 einops.rearrange 将 (batch, time, features) 变成 (time, batch, features)。
         """
-        # YOUR CODE HERE
-        pass
+        return rearrange(x, 'b t f -> t b f')
 
     x = torch.randn(4, 10, 32)
     out = swap_time_and_batch(x)
@@ -189,8 +195,7 @@ def test_q13():
         """
         用 einops.reduce 对空间维度 (h, w) 求均值。
         """
-        # YOUR CODE HERE
-        pass
+        return reduce(x, 'b c h w -> b c', 'mean')
 
     x = torch.arange(2 * 3 * 2 * 2, dtype=torch.float32).reshape(2, 3, 2, 2)
     assert torch.allclose(mean_over_spatial(x), x.mean(dim=(2, 3)))
@@ -202,8 +207,7 @@ def test_q14():
         """
         用 einops.repeat 将单个样本 (features,) 扩展成 (batch_size, features)。
         """
-        # YOUR CODE HERE
-        pass
+        return repeat(x, 'f -> b f', b=batch_size)
 
     out = repeat_to_batch(torch.tensor([1, 2, 3]), 2)
     assert torch.equal(out, _expected_q14())
