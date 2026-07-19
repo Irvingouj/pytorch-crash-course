@@ -134,3 +134,30 @@ def test_q1():
 - 把模型搬到 GPU 训练
 
 下一步：进入 Stanford CS336 Assignment 1；本课程只做前置训练，不提供正式作业答案。
+
+---
+
+## 🔗 相关仓库
+
+| 仓库 | 路径 | GitHub |
+|---|---|---|
+| 本课程 (PyTorch 速成) | `~/code/learn/torch` | (本地学习仓库) |
+| **Stanford CS336**（下一个目标） | `~/code/learn/stanford-cs336` | [Irvingouj/stanford-cs336](https://github.com/Irvingouj/stanford-cs336) |
+
+> PyTorch 速成课（本仓库）1–7 课是 CS336 的硬前置；第 8 课（CS336 桥梁）直接衔接 CS336 Assignment 1。
+> CS336 仓库内从 `course/assignments/01-basics/` 开始。
+
+---
+
+## 📊 当前进度
+
+- [x] 01 tensor ops（einops 部分待补）
+- [x] 02 autograd
+- [x] 03 nn.Module
+- [x] 04 loss / optimizer
+- [ ] 05 data loading（跳过：纯软件 plumbing）
+- [ ] 06 training loop
+- [ ] 07 GPU / checkpoint
+- [ ] 08 CS336 桥梁（本课程真正的目标）
+
+下一步路径：**01 剩 3 题 → 06 → 07 → 08 → CS336 A1**。
