@@ -151,17 +151,19 @@ def test_q1():
 
 ## 📊 当前进度
 
-以 `pytest practice/` 为准（`39 passed, 30 failed`）：
+以 `pytest practice/` 为准（`39 passed, 30 failed`）。**主动收尾于此**——剩下几课是工程 plumbing，对理解 LLM / inference 收益低，跳过直接进 CS336。
 
-| # | 课 | 状态 | 通过 / 总数 |
-|---|---|---|---|
-| 01 | tensor ops | ✅ 完成 | 14 / 14 |
-| 02 | autograd | ✅ 完成 | 8 / 8 |
-| 03 | nn.Module | ✅ 完成 | 8 / 8 |
-| 04 | loss / optimizer | ✅ 完成 | 7 / 7 |
-| 05 | data loading | ⏭️ 跳过（纯软件 plumbing） | 0 / 8 |
-| 06 | training loop | 🔨 进行中 | 2 / 6 |
-| 07 | GPU / checkpoint | ⬜ 未开始 | 0 / 9 |
-| 08 | CS336 桥梁 | ⬜ 未开始（本课程真正的目标） | 0 / 9 |
+| # | 课 | 状态 | 通过 / 总数 | 备注 |
+|---|---|---|---|---|
+| 01 | tensor ops | ✅ 完成 | 14 / 14 | |
+| 02 | autograd | ✅ 完成 | 8 / 8 | |
+| 03 | nn.Module | ✅ 完成 | 8 / 8 | |
+| 04 | loss / optimizer | ✅ 完成 | 7 / 7 | |
+| 05 | data loading | ⏭️ 跳过 | 0 / 8 | 纯软件 plumbing |
+| 06 | training loop | 🔨 部分完成，收尾 | 2 / 6 | loss 诊断已在 obsidian M4 笔记里；剩 grad clip/eval loop 照抄即可 |
+| 07 | GPU / checkpoint | ⏭️ 跳过 | 0 / 9 | state_dict = tensor 在 disk↔RAM↔VRAM 间搬，已懂机制 |
+| 08 | CS336 桥梁 | 🚧 卡住，直接转 CS336 本体 | 0 / 9 | 08 本就是 CS336 预演；直接进 CS336 A1 |
 
-下一步路径：**06 剩 4 题 → 07 → 08 → CS336 A1**。
+> **为什么跳 5/6/7：** 目标是理解 LLM 怎么工作（transformer + ML 基础），不是把 PyTorch 工程课刷完。DataLoader、checkpoint、训练循环细节对推理引擎的心智模型贡献很低，真要用时查文档即可。同时在练 CUDA（`Irvingouj/cuda-learn`），那条线才是建 LLM 直觉的主力。
+
+**下一步：直接进 CS336 A1**（`~/code/learn/stanford-cs336`，从 `course/assignments/01-basics/` 开始）。
