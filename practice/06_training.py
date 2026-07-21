@@ -27,8 +27,24 @@ def test_q1():
         """
         训练一个 epoch，返回按样本平均的 loss。
         """
-        # YOUR CODE HERE
-        pass
+        loss_fn = nn.CrossEntropyLoss()
+        model.train()
+        total_loss = 0.0
+        total_sample = 0
+        for x,y in loader:
+            x = x.to(device)
+            y = y.to(device)
+            optimizer.zero_grad()
+            prediction = model(x)
+            loss = loss_fn(prediction,y)
+            loss.backward()
+            optimizer.step()
+            total_loss += loss.item() * x.size(0)   # .item() 取出 float，乘 batch 大小做加权
+            total_sample += x.size(0)
+
+        return total_loss / total_sample
+
+        
 
     model = nn.Linear(2, 2)
     optimizer = optim.SGD(model.parameters(), lr=0.1)
@@ -46,8 +62,23 @@ def test_q2():
         """
         返回 {"loss": float, "accuracy": float}，不更新参数。
         """
-        # YOUR CODE HERE
-        pass
+        loss_fn = nn.CrossEntropyLoss()
+        model.eval()
+        total_loss = 0.0
+        total_sample = 0
+        total_correct = 0
+        for x,y in loader:
+            pred = model(x)
+            x,y = x.to(device),y.to(device)
+            loss = loss_fn(pred,y)
+            total_loss += loss.item() * x.size(0)
+            total_sample += x.size(0)
+            total_correct += (pred.argmax(dim=1) == y).sum().item()
+
+        return {
+            "loss": total_loss/total_sample,
+            "accuracy": total_correct/total_sample
+        }
 
     model = nn.Linear(2, 2)
     out = evaluate(model, _tiny_loader(), torch.device("cpu"))
