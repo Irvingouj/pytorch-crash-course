@@ -151,13 +151,17 @@ def test_q1():
 
 ## 📊 当前进度
 
-- [x] 01 tensor ops（einops 部分待补）
-- [x] 02 autograd
-- [x] 03 nn.Module
-- [x] 04 loss / optimizer
-- [ ] 05 data loading（跳过：纯软件 plumbing）
-- [ ] 06 training loop
-- [ ] 07 GPU / checkpoint
-- [ ] 08 CS336 桥梁（本课程真正的目标）
+以 `pytest practice/` 为准（`39 passed, 30 failed`）：
 
-下一步路径：**01 剩 3 题 → 06 → 07 → 08 → CS336 A1**。
+| # | 课 | 状态 | 通过 / 总数 |
+|---|---|---|---|
+| 01 | tensor ops | ✅ 完成 | 14 / 14 |
+| 02 | autograd | ✅ 完成 | 8 / 8 |
+| 03 | nn.Module | ✅ 完成 | 8 / 8 |
+| 04 | loss / optimizer | ✅ 完成 | 7 / 7 |
+| 05 | data loading | ⏭️ 跳过（纯软件 plumbing） | 0 / 8 |
+| 06 | training loop | 🔨 进行中 | 2 / 6 |
+| 07 | GPU / checkpoint | ⬜ 未开始 | 0 / 9 |
+| 08 | CS336 桥梁 | ⬜ 未开始（本课程真正的目标） | 0 / 9 |
+
+下一步路径：**06 剩 4 题 → 07 → 08 → CS336 A1**。
